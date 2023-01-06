@@ -2,7 +2,7 @@
 //  LenoCalendarApp.swift
 //  LenoCalendar
 //
-//  Created by 彭智鑫 on 2023/1/4.
+//  Created by Angus on 2023/1/4.
 //
 
 import SwiftUI
@@ -23,7 +23,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var popOver = NSPopover()
     
     func applicationDidFinishLaunching(_ notification: Notification) {
-        let menuView = ContentView()
+        let menuView = ContentView(calendar: Calendar(identifier: .gregorian))
         
         popOver.behavior = .transient
         popOver.animates = true
@@ -31,7 +31,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         popOver.contentViewController = NSViewController()
         popOver.contentViewController?.view = NSHostingView(rootView: menuView)
     
-        
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         
         if let menuButton = statusItem?.button {
