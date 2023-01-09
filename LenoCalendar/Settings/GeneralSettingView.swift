@@ -9,10 +9,16 @@ import SwiftUI
 import LaunchAtLogin
 
 struct GeneralSettingView: View {
+    @AppStorage("firstWeekDay") var firstWeekDay: Int = 1
+    
     var body: some View {
         Form {
             LaunchAtLogin.Toggle {
                 Text("开机自启动")
+            }
+            Picker("一周开始于：", selection: $firstWeekDay) {
+                Text("周日").tag(1)
+                Text("周一").tag(2)
             }
         }
         .padding(20)
