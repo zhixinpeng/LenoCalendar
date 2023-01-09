@@ -12,6 +12,7 @@ struct DateView: View {
     private let calendar: Calendar
     private let formatter: DateFormatter
     @Binding private var selectedDate: Date
+    @State private var isHovered = false
     
     init(date: Date, calendar: Calendar, formatter: DateFormatter, selectedDate: Binding<Date>) {
         self.date = date
@@ -29,8 +30,8 @@ struct DateView: View {
         } label: {
             VStack {
                 Text(formatter.string(from: date))
-                    .font(.custom("AvenirNext-DemiBold", size: 20))
-                    .foregroundColor(calendar.isDateInWeekend(date) ? Color("red") : Color("primaryText"))
+                    .font(.custom("AvenirNext-DemiBold", size: 18))
+                    .foregroundColor(calendar.isDateInWeekend(date) && !date.isWorkHoliday ? Color("red") : Color("primaryText"))
                 
                 if(isFestival) {
                     Text(chineseDate.festival!)
@@ -42,10 +43,28 @@ struct DateView: View {
                         .foregroundColor(Color("primaryText"))
                 }
             }
-            .frame(width: 48, height: 48)
+            .frame(width: 46, height: 46)
         }
         .buttonStyle(.plain)
-        .if(date.isInSameDay(as: selectedDate)) { view in
+        .if(date.isHoliday) { view in
+            view.background(Color("red").opacity(0.3)).cornerRadius(8)
+                .overlay(alignment: .topLeading) {
+                    Text("休")
+                        .font(.system(size: 8))
+                        .foregroundColor(Color("red"))
+                        .padding(4)
+                }
+        }
+        .if(date.isWorkHoliday) {view in
+            view.background(Color("secondary").opacity(0.3)).cornerRadius(8)
+                .overlay(alignment: .topLeading) {
+                    Text("班")
+                        .font(.system(size: 8))
+                        .foregroundColor(Color("primaryText"))
+                        .padding(4)
+                }
+        }
+        .if(date.isInSameDay(as: selectedDate) || isHovered) { view in
             view.overlay {
                 RoundedRectangle(cornerRadius: 8)
                     .stroke(Color("secondary"), lineWidth: 1)
@@ -56,6 +75,9 @@ struct DateView: View {
                 RoundedRectangle(cornerRadius: 8)
                     .stroke(Color("blue"), lineWidth: 1)
             }
+        }
+        .onHover { isHovered in
+            self.isHovered = isHovered
         }
     }
 }

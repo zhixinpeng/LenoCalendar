@@ -31,7 +31,7 @@ public struct CalendarView<Day: View, Header: View, Title: View, Trailing: View>
         let days = makeDays()
         
         return LazyVGrid(columns: Array(repeating: GridItem(.fixed(48)), count: daysInWeek), spacing: 2) {
-            Section(header: title(month)) {
+            Section(header: title(date)) {
                 ForEach(days.prefix(daysInWeek), id: \.self, content: header)
                 ForEach(days, id: \.self) { date in
                     if calendar.isDate(date, equalTo: month, toGranularity: .month) {

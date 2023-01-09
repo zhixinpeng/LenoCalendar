@@ -28,6 +28,8 @@ extension Date {
     var isInYesterday: Bool { Calendar.current.isDateInYesterday(self) }
     var isInToday:     Bool { Calendar.current.isDateInToday(self) }
     var isInTomorrow:  Bool { Calendar.current.isDateInTomorrow(self) }
+    var isHoliday:     Bool { Holiday.isHoliday(date: self) }
+    var isWorkHoliday: Bool { Holiday.isWorkHoliday(date: self) }
     
     var isInTheFuture: Bool { self > Date() }
     var isInThePast:   Bool { self < Date() }
@@ -37,10 +39,11 @@ extension Date {
         
         let festival = Festival.getFistival(date: self)
         
-        let lunar = DateFormatter(dateFormatter: "d", calendar: calendar, dateStyle: .medium).string(from: self)
+        let lunar = DateFormatter(calendar: calendar, dateFormatter: "d", dateStyle: .medium).string(from: self)
         
         return (lunar, festival)
     }
+    
 }
 
 extension Calendar {
@@ -66,12 +69,19 @@ extension Calendar {
 }
 
 extension DateFormatter {
-    convenience init(dateFormatter: String, calendar: Calendar, dateStyle: DateFormatter.Style = .none) {
+    convenience init(calendar: Calendar, dateFormatter: String? = nil, dateStyle: DateFormatter.Style? = nil, timeStyle: DateFormatter.Style? = nil) {
         self.init()
         self.locale = Locale(identifier: "zh_CN")
-        self.dateStyle = dateStyle
         self.calendar = calendar
-        self.dateFormat = dateFormatter
+        if dateStyle != nil {
+            self.dateStyle = dateStyle!
+        }
+        if timeStyle != nil {
+            self.timeStyle = timeStyle!
+        }
+        if dateFormatter != nil {
+            self.dateFormat = dateFormatter!
+        }
     }
 }
 

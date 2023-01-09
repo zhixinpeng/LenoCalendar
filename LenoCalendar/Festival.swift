@@ -15,6 +15,7 @@ struct Festival {
         "2023-1-1": "元旦",
         "2023-1-5": "小寒",
         "2023-1-20": "大寒",
+        "2023-1-21": "除夕",
         "2023-2-4": "立春",
         "2023-2-14": "情人节",
         "2023-2-19": "雨水",
@@ -52,7 +53,7 @@ struct Festival {
     ]
     
     static func getFistival(date: Date) -> String? {
-        let key = DateFormatter(dateFormatter: "YYYY-M-d", calendar: Calendar(identifier: .gregorian)).string(from: date)
+        let key = DateFormatter(calendar: Calendar(identifier: .gregorian), dateFormatter: "YYYY-M-d").string(from: date)
         
         if let festival = festivals[key] {
             return festival

@@ -19,10 +19,10 @@ struct ContentView: View {
     
     init(calendar: Calendar) {
         self.calendar = calendar
-        self.monthFormatter = DateFormatter(dateFormatter: "YYYY-MM", calendar: calendar)
-        self.dayFormatter = DateFormatter(dateFormatter: "d", calendar: calendar)
-        self.weekDayFormatter = DateFormatter(dateFormatter: "E", calendar: calendar)
-        self.fullFormatter = DateFormatter(dateFormatter: "YYYY-MM-DD", calendar: calendar)
+        self.monthFormatter = DateFormatter(calendar: calendar, dateStyle: .full)
+        self.dayFormatter = DateFormatter(calendar: calendar, dateFormatter: "d")
+        self.weekDayFormatter = DateFormatter(calendar: calendar, dateFormatter: "E")
+        self.fullFormatter = DateFormatter(calendar: calendar, dateFormatter: "YYYY-MM-DD")
     }
     
     var body: some View {
@@ -32,8 +32,8 @@ struct ContentView: View {
             Text(weekDayFormatter.string(from: date))
                 .font(.system(size: 14, weight: .semibold))
                 .foregroundColor(Color("secondaryText"))
-                .frame(width: 48, height: 25)
-                .padding(.top, 16)
+                .frame(width: 48)
+                .padding(.vertical, 12)
         } title: { date in
             HStack {
                 Button {
@@ -52,6 +52,9 @@ struct ContentView: View {
                 Spacer()
                 Text(monthFormatter.string(from: date))
                     .font(.system(size: 16, weight: .semibold))
+                    .onTapGesture(count: 2) {
+                        selectedDate = Date.now
+                    }
                 Spacer()
                 
                 Button {
