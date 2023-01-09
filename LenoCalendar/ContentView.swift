@@ -76,7 +76,6 @@ struct ContentView: View {
             DateView(date: date, calendar: calendar, formatter: dayFormatter, selectedDate: $selectedDate)
                 .opacity(0.3)
         }
-        
     }
 }
 

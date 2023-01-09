@@ -43,6 +43,19 @@ public struct CalendarView<Day: View, Header: View, Title: View, Trailing: View>
             }
         }
         .padding()
+        .contextMenu {
+            Button {
+                NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
+            } label: {
+                Label("设置", systemImage: "slider.horizontal.3")
+            }
+            
+            Button {
+                NSApplication.shared.terminate(nil)
+            } label: {
+                Label("退出", systemImage: "power")
+            }
+        }
     }
 }
 
